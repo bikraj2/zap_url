@@ -24,9 +24,9 @@ func New(repo kgsRepository) *Controller {
 }
 
 func (ctrl *Controller) GetNewKey(ctx context.Context) (string, error) {
-	key, err := ctrl.repo.GetNewKey(ctx)
+	var key string
 	for attempt := 1; attempt <= maxRetries; attempt++ {
-		key, err = ctrl.repo.GetNewKey(ctx)
+		key, err := ctrl.repo.GetNewKey(ctx)
 		if err == nil {
 			return key, nil // Success, return key
 		}

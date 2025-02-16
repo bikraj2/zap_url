@@ -30,7 +30,7 @@ func (h *Handler) Handle(w http.ResponseWriter, _ *http.Request) {
 		return
 
 	}
-	err = writeJSON(w, http.StatusAccepted, envelope{"key": key}, nil)
+	err = writeJSON(w, http.StatusOK, envelope{"key": key}, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
