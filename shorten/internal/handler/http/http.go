@@ -2,7 +2,7 @@ package http
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/bikraj2/url_shortener/shorten/internal/controller"
@@ -27,13 +27,14 @@ func (h *handler) CreateShortenUrl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	shortURL, err := h.ctrl.GetShortenUrl(r.Context(), req.LongURL)
+	shortURL, err := h.ctrl.CreateShortUrl(r.Context(), req.LongURL)
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Error generating short URL", http.StatusInternalServerError)
+		// log.Println(err.Error())
+		fmt.Println(err.Error())
+		http.Error(w, fmt.Sprintf("Error generating short URL:%v", err.Error()), http.StatusInternalServerError)
 		return
 	}
-	err = writeJSON(w, http.StatusCreated, envelope{"shortened_url": shortURL}, nil)
+	err = writeJSON(w, http.StatusCreated, envelope{"short_url": shortURL}, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}

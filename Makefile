@@ -28,6 +28,15 @@ confirm:
 run/shorten:
 	go run ./shorten/cmd/ -db-dsn=${URL_SHORTENER_DSN}
 
+.PHONY: run/redirect
+run/redirect:
+	go run ./redirect/cmd/ -db-dsn=${URL_SHORTENER_DSN}
+
+.PHONY: run/gateway
+run/gateway:
+	go run ./shortener-gateway/cmd/ -db-dsn=${URL_SHORTENER_DSN}
+
+
 # --------------------------------------------------------------------------------------------------------------#
 # Database Operations
 # --------------------------------------------------------------------------------------------------------------#

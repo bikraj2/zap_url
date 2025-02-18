@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -21,7 +22,7 @@ func New(db *sql.DB, rdb *redis.Client, url string) *Repository {
 	return &Repository{db: db, kgsServiceUrl: url, rdb: rdb}
 }
 
-func (r *Repository) GetShortenUrl(ctx context.Context, longURL string) (string, error) {
+func (r *Repository) CreateShortUrl(ctx context.Context, longURL string) (string, error) {
 	var short_url string
 	var err error
 	alreadyExist := true
@@ -35,12 +36,13 @@ func (r *Repository) GetShortenUrl(ctx context.Context, longURL string) (string,
 			return "", err
 		}
 	}
+	expiry_time := time.Now().Add(24 * 60 * 60 * time.Second)
 	query := `
   INSERT INTO  url_table 
-  (long_url,short_url) 
-  VALUES ($1,$2)
+  (long_url,short_url,expires_at) 
+  VALUES ($1,$2,$3)
   `
-	_, err = r.db.ExecContext(ctx, query, longURL, short_url)
+	_, err = r.db.ExecContext(ctx, query, longURL, short_url, expiry_time)
 	if err != nil {
 		return "", err
 	}

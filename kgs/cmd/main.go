@@ -14,6 +14,7 @@ import (
 )
 
 func main() {
+
 	client := redis.NewClient(&redis.Options{
 		Addr: "localhost:6379",
 	})

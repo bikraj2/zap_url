@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"time"
 
 	"github.com/bikraj2/url_shortener/pkg/discovery"
 	"github.com/bikraj2/url_shortener/pkg/discovery/consul"
-	"github.com/bikraj2/url_shortener/shorten/internal/controller"
-	httphandler "github.com/bikraj2/url_shortener/shorten/internal/handler/http"
-	repository "github.com/bikraj2/url_shortener/shorten/internal/repository/postgreSql"
+	"github.com/bikraj2/url_shortener/redirect/internal/controller"
+	httphandler "github.com/bikraj2/url_shortener/redirect/internal/hanlder/http"
+	"github.com/bikraj2/url_shortener/redirect/internal/repository/postgresql"
 	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
-
 	"github.com/redis/go-redis/v9"
+
+	_ "github.com/lib/pq"
 )
 
 type config struct {
@@ -30,7 +31,7 @@ type config struct {
 	}
 }
 
-const ServiceName = "shorten"
+const ServiceName = "redirect"
 
 func main() {
 	var cfg config
@@ -38,7 +39,7 @@ func main() {
 	flag.IntVar(&cfg.db.MaxOpenCons, "maxOpenCons", 25, "Maximum Number of Open Connections")
 	flag.IntVar(&cfg.db.MaxIdleConns, "maxIdleCons", 23, "Maximum Number of Open Idle Connections")
 	flag.StringVar(&cfg.db.MaxIdleTime, "maxIdleTime", "15m", "Maximum Number of Open Idle Connections")
-	flag.StringVar(&cfg.db.dsn, "db-dsn", "", "Postgresql DSN")
+	flag.StringVar(&cfg.db.dsn, "db-dsn", "postgres://admin:admin@localhost:5432/url_shortener?sslmode=disable", "Postgresql DSN")
 
 	registry, err := consul.New("localhost:8500")
 	if err != nil {
@@ -46,7 +47,7 @@ func main() {
 
 	}
 	instanceID := discovery.GenerateInstanceID(ServiceName)
-	err = registry.RegisterService(context.Background(), ServiceName, instanceID, "localhost:8081")
+	err = registry.RegisterService(context.Background(), ServiceName, instanceID, "localhost:8082")
 	if err != nil {
 		panic(err)
 	}
@@ -69,13 +70,12 @@ func main() {
 	}
 	db, err := openDB(cfg)
 	if err != nil {
-		panic(err)
+		log.Fatalf(err.Error())
 	}
 
 	defer db.Close()
-	repo := repository.New(db, client, "http://localhost:8080")
+	repo := repository.New(db, client)
 
-	repo.LoadShortURLsIntoBloomFilter(ctx)
 	fmt.Println("Repository initialized successfully!")
 	ctrl := controller.New(repo)
 
@@ -84,13 +84,13 @@ func main() {
 	h := httphandler.New(ctrl)
 	// Set up HTTP server
 	r := mux.NewRouter()
-	r.HandleFunc("/", h.CreateShortenUrl).Methods(http.MethodPost)
+	r.HandleFunc("/{short_url}", h.Handle).Methods(http.MethodGet)
 	server := &http.Server{
-		Addr:    ":8081",
+		Addr:    ":8082",
 		Handler: r,
 	}
 
-	fmt.Println("Server is running on http://localhost:8081")
+	fmt.Println("Server is running on http://localhost:8082")
 
 	log.Fatal(server.ListenAndServe())
 }

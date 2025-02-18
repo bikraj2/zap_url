@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS url_table;
+ROP TABLE IF EXISTS url_table;
