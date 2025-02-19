@@ -42,7 +42,7 @@ func (h *handler) CreateShortUrl(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"short_url": short_url}, nil)
+	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"short_url": "http://localhost:8084/" + short_url}, nil)
 	if err != nil {
 		customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
 		return

@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/bikraj2/url_shortener/pkg/discovery"
@@ -17,7 +19,22 @@ import (
 
 const ServiceName = "shorten_gateway"
 
+type config struct {
+	cors struct {
+		trustedOrigins []string
+	}
+}
+type application struct {
+	cfg config
+}
+
 func main() {
+	var cfg config
+	flag.Func("cors-trusted-origin", "Trusted CORS orirgins (space seperated)", func(s string) error {
+		cfg.cors.trustedOrigins = strings.Fields(s)
+		return nil
+	})
+	flag.Parse()
 	registry, err := consul.New("localhost:8500")
 	if err != nil {
 		panic(err)
@@ -36,12 +53,14 @@ func main() {
 		}
 	}()
 
+	app := &application{cfg: cfg}
 	redirectGateway := redirect.New(registry)
 	shortenGateway := shorten.New(registry)
 	ctrl := controller.New(redirectGateway, shortenGateway)
 	h := httphandler.New(ctrl)
 
 	r := chi.NewRouter()
+	r.Use(app.enableCORS)
 	r.Get("/{short_url}", h.GetLongUrl)
 	r.Post("/shorten", h.CreateShortUrl)
 	server := &http.Server{

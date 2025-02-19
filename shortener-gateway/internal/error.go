@@ -26,5 +26,5 @@ func NotFoundResponse(w http.ResponseWriter) {
 	ErrorResponse(w, http.StatusNotFound, nil, message)
 }
 func BadRequestErrorResponse(w http.ResponseWriter) {
-	ErrorResponse(w, http.StatusNotFound, nil, ErrBadRequest.Error())
+	ErrorResponse(w, http.StatusBadRequest, nil, ErrBadRequest.Error())
 }

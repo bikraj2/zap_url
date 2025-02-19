@@ -34,7 +34,7 @@ run/redirect:
 
 .PHONY: run/gateway
 run/gateway:
-	go run ./shortener-gateway/cmd/ -db-dsn=${URL_SHORTENER_DSN}
+	go run ./shortener-gateway/cmd/ -cors-trusted-origin="http://localhost:5173"
 
 
 # --------------------------------------------------------------------------------------------------------------#
