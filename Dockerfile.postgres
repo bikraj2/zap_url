@@ -1,0 +1,12 @@
+# Use the official PostgreSQL image
+FROM postgres:14
+
+# Set environment variables
+ENV POSTGRES_USER=admin
+ENV POSTGRES_PASSWORD=admin
+ENV POSTGRES_DB=url_shortener
+
+COPY init.sql /docker-entrypoint-initdb.d/
+
+# Expose PostgreSQL default port
+EXPOSE 5432

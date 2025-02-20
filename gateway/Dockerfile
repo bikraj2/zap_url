@@ -18,19 +18,19 @@ copy . .
 
 
 RUN go build -o ./main \
-    -ldflags="-linkmode external -extldflags -static" \
-    ./shorten/cmd/
+    ./gateway/cmd/
 
 
 FROM alpine:latest
 
-COPY --from=builder /app/main shorten
+COPY --from=builder /app/main /shorten
 
 COPY .envrc /envrc
 
 # Ensure the env file is sourced before running
 RUN echo 'source /envrc' >> /etc/profile
 
-EXPOSE 8081
+EXPOSE 8084
 
-CMD ["sh", "-c", "source /envrc && /shorten --db-dsn \"$URL_SHORTENER_DSN\""]
+CMD ["sh", "-c", "source /envrc && /shorten -cors-trusted-origin \"$CORS_TRUSTED_ORIGN\""]
+

@@ -1,1 +1,4 @@
 .envrc
+.DS_Store
+main
+init.sql

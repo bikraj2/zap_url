@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -40,16 +41,40 @@ func main() {
 	flag.StringVar(&cfg.db.MaxIdleTime, "maxIdleTime", "15m", "Maximum Number of Open Idle Connections")
 	flag.StringVar(&cfg.db.dsn, "db-dsn", "", "Postgresql DSN")
 
-	registry, err := consul.New("localhost:8500")
+	consulURL := "http://dev-consul:8500/v1/status/leader"
+
+	// Make the GET request to Consul
+	resp, err := http.Get(consulURL)
+	if err != nil {
+		log.Fatalf("Error making request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// Read the response body
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalf("Error reading response body: %v", err)
+	}
+
+	// Print the response (the leader's address)
+	if resp.StatusCode == http.StatusOK {
+		fmt.Printf("Consul Leader: %s\n", body)
+	} else {
+		fmt.Printf("Error: Received non-OK HTTP status: %s\n", resp.Status)
+	}
+	registry, err := consul.New("dev-consul:8500")
 	if err != nil {
 		panic(err)
 
 	}
+	fmt.Println("successfully connected to consul")
 	instanceID := discovery.GenerateInstanceID(ServiceName)
-	err = registry.RegisterService(context.Background(), ServiceName, instanceID, "localhost:8081")
+	err = registry.RegisterService(context.Background(), ServiceName, instanceID, "shorten:8081")
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Println("successfully registered services to consul")
 	defer registry.DeRegisterService(context.Background(), "", instanceID)
 	go func() {
 		for {
@@ -59,10 +84,11 @@ func main() {
 	}()
 
 	client := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
+		Addr: "redis-rebloom:6379",
 	})
 	flag.Parse()
 	ctx := context.Background()
+
 	_, err = client.Ping(ctx).Result()
 	if err != nil {
 		log.Fatalf("Failed to connect to Redis: %v", err)
@@ -73,7 +99,8 @@ func main() {
 	}
 
 	defer db.Close()
-	repo := repository.New(db, client, "http://localhost:8080")
+
+	repo := repository.New(db, client, "http://kgs:8080")
 
 	repo.LoadShortURLsIntoBloomFilter(ctx)
 	fmt.Println("Repository initialized successfully!")
@@ -90,7 +117,7 @@ func main() {
 		Handler: r,
 	}
 
-	fmt.Println("Server is running on http://localhost:8081")
+	fmt.Println("Server is running on http://shorten:8081")
 
 	log.Fatal(server.ListenAndServe())
 }

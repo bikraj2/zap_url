@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/bikraj2/url_shortener/shortener-gateway/internal/helper"
+	"github.com/bikraj2/url_shortener/gateway/internal/helper"
 )
 
 var (

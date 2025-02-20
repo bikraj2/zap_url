@@ -12,25 +12,25 @@ ENV CGO_ENABLED=1
 
 COPY ../go.mod ../go.sum ./
 
-COPY .envrc /envrc
 RUN go mod download
+
 copy . .
 
 
 RUN go build -o ./main \
     -ldflags="-linkmode external -extldflags -static" \
-    ./shorten/cmd/
+    ./redirect/cmd/
 
 
 FROM alpine:latest
 
-COPY --from=builder /app/main shorten
-
+COPY --from=builder /app/main redirect
 COPY .envrc /envrc
 
 # Ensure the env file is sourced before running
 RUN echo 'source /envrc' >> /etc/profile
 
-EXPOSE 8081
 
-CMD ["sh", "-c", "source /envrc && /shorten --db-dsn \"$URL_SHORTENER_DSN\""]
+EXPOSE 8082
+
+CMD ["sh", "-c", "source /envrc && /redirect --db-dsn \"$URL_SHORTENER_DSN\""]

@@ -3,8 +3,8 @@ package controller
 import (
 	"context"
 
-	redirect "github.com/bikraj2/url_shortener/shortener-gateway/internal/gateway/redirect/http"
-	shorten "github.com/bikraj2/url_shortener/shortener-gateway/internal/gateway/shorten/http"
+	redirect "github.com/bikraj2/url_shortener/gateway/internal/gateway/redirect/http"
+	shorten "github.com/bikraj2/url_shortener/gateway/internal/gateway/shorten/http"
 )
 
 type Controller struct {

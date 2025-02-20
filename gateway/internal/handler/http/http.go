@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	customerror "github.com/bikraj2/url_shortener/shortener-gateway/internal"
-	"github.com/bikraj2/url_shortener/shortener-gateway/internal/controller"
-	"github.com/bikraj2/url_shortener/shortener-gateway/internal/helper"
+	customerror "github.com/bikraj2/url_shortener/gateway/internal"
+	"github.com/bikraj2/url_shortener/gateway/internal/controller"
+	"github.com/bikraj2/url_shortener/gateway/internal/helper"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -42,7 +42,7 @@ func (h *handler) CreateShortUrl(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"short_url": "http://localhost:8084/" + short_url}, nil)
+	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"short_url": "http://localhost:8084" + short_url}, nil)
 	if err != nil {
 		customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
 		return

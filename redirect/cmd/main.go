@@ -41,13 +41,13 @@ func main() {
 	flag.StringVar(&cfg.db.MaxIdleTime, "maxIdleTime", "15m", "Maximum Number of Open Idle Connections")
 	flag.StringVar(&cfg.db.dsn, "db-dsn", "postgres://admin:admin@localhost:5432/url_shortener?sslmode=disable", "Postgresql DSN")
 
-	registry, err := consul.New("localhost:8500")
+	registry, err := consul.New("dev-consul:8500")
 	if err != nil {
 		panic(err)
 
 	}
 	instanceID := discovery.GenerateInstanceID(ServiceName)
-	err = registry.RegisterService(context.Background(), ServiceName, instanceID, "localhost:8082")
+	err = registry.RegisterService(context.Background(), ServiceName, instanceID, "redirect:8082")
 	if err != nil {
 		panic(err)
 	}
@@ -60,7 +60,7 @@ func main() {
 	}()
 
 	client := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
+		Addr: "redis-rebloom:6379",
 	})
 	flag.Parse()
 	ctx := context.Background()

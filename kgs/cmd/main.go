@@ -16,7 +16,7 @@ import (
 func main() {
 
 	client := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
+		Addr: "redis-rebloom:6379",
 	})
 
 	ctx := context.Background()

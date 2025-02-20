@@ -8,8 +8,8 @@ import (
 	"math/rand"
 	"net/http"
 
+	customerror "github.com/bikraj2/url_shortener/gateway/internal"
 	"github.com/bikraj2/url_shortener/pkg/discovery"
-	customerror "github.com/bikraj2/url_shortener/shortener-gateway/internal"
 )
 
 type Gateway struct {
