@@ -34,7 +34,7 @@ run/redirect:
 
 .PHONY: run/gateway
 run/gateway:
-	go run ./shortener-gateway/cmd/ -cors-trusted-origin="http://localhost:5173"
+	go run ./gateway/cmd/ -cors-trusted-origin="http://localhost:5173"
 
 
 SERVICES =  gateway kgs shorten redirect
@@ -48,15 +48,15 @@ $(SERVICES):
 
 .PHONY: run/docker
 run/docker:
-	- docker run -d --restart unless-stopped --name shorten --network url_network -p 8081:8081 shorten
-	- docker run -d --restart unless-stopped --name redirect --network url_network -p 8082:8082 redirect
-	- docker run -d --restart unless-stopped --name kgs --network url_network -p 8080:8080 kgs
-	- docker run -d --restart unless-stopped --name  gateway --network url_network -p 8084:8084 gateway
-	- docker run -d --restart unless-stopped --name redis-rebloom --network url_network -p 6379:6379 goodform/rebloom:latest 
+	- docker run -d --restart unless-stopped --name shorten --network url_network -p 127.0.0.1:8081:8081 shorten
+	- docker run -d --restart unless-stopped --name redirect --network url_network -p 127.0.0.1:8082:8082 redirect
+	- docker run -d --restart unless-stopped --name kgs --network url_network -p 127.0.0.1:8080:8080 kgs
+	- docker run -d --restart unless-stopped --name  gateway --network url_network -p  127.0.0.1:8084:8084 gateway
+	- docker run -d --restart unless-stopped --name redis-rebloom --network url_network -p 127.0.0.1:6379:6379 goodform/rebloom:latest 
 	- docker run -d \
 		--network url_network \
-		-p 8500:8500 \
-		-p 8600:8600/udp \
+		-p 127.0.0.1:8500:8500 \
+		-p 127.0.0.1:8600:8600/udp \
 		--name=dev-consul \
 		hashicorp/consul:latest \
 		agent -server -ui \
@@ -66,7 +66,7 @@ run/docker:
 	- docker run -d --restart unless-stopped \
 		--name pg-container \
 		--network url_network \
-		-p 5432:5432 \
+		-p 127.0.0.1:5432:5432 \
 		-v pg_data:/var/lib/postgresql/data \
 		postgres
 # --------------------------------------------------------------------------------------------------------------#

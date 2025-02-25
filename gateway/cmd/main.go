@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -60,8 +61,10 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(app.enableCORS)
-	r.Get("/{short_url}", h.GetLongUrl)
-	r.Post("/shorten", h.CreateShortUrl)
+	r.Use(loggingMiddleware)
+	r.Get("/", h.Redirect)
+	r.Get("/api/v1/resolve/{short_url}", h.GetLongUrl)
+	r.Post("/api/v1/shorten", h.CreateShortUrl)
 	server := &http.Server{
 		Addr:    ":8084",
 		Handler: r}
@@ -94,4 +97,33 @@ func (app *application) enableCORS(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+
+		// Log the request details (method, URL, and time)
+		log.Printf("Started %s %s", r.Method, r.URL.Path)
+
+		// Create a custom ResponseWriter to capture status code and log it
+		lrw := &loggedResponseWriter{ResponseWriter: w}
+
+		// Call the next handler
+		next.ServeHTTP(lrw, r)
+
+		// Log the response status code and the time taken to process the request
+		log.Printf("Completed %s %s with status %d in %v", r.Method, r.URL.Path, lrw.statusCode, time.Since(start))
+	})
+}
+
+// loggedResponseWriter is a wrapper around http.ResponseWriter to capture status code
+type loggedResponseWriter struct {
+	http.ResponseWriter
+	statusCode int
+}
+
+// WriteHeader captures the status code from the response
+func (lrw *loggedResponseWriter) WriteHeader(statusCode int) {
+	lrw.statusCode = statusCode
+	lrw.ResponseWriter.WriteHeader(statusCode)
 }

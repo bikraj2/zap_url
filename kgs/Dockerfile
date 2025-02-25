@@ -18,7 +18,6 @@ copy . .
 
 
 RUN go build -o ./main \
-    -ldflags="-linkmode external -extldflags -static" \
     ./kgs/cmd/
 
 

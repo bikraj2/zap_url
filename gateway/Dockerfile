@@ -32,5 +32,5 @@ RUN echo 'source /envrc' >> /etc/profile
 
 EXPOSE 8084
 
-CMD ["sh", "-c", "source /envrc && /shorten -cors-trusted-origin \"$CORS_TRUSTED_ORIGN\""]
+CMD ["sh", "-c", "source /envrc && /shorten -cors-trusted-origin \"$CORS_ORIGIN\""]
 

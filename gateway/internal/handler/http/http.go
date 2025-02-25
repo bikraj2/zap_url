@@ -42,11 +42,14 @@ func (h *handler) CreateShortUrl(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"short_url": "http://localhost:8084" + short_url}, nil)
+	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"short_url": short_url}, nil)
 	if err != nil {
 		customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
 		return
 	}
+}
+func (h *handler) Redirect(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "https://www.zapurl.tech/main", http.StatusTemporaryRedirect)
 }
 
 func (h *handler) GetLongUrl(w http.ResponseWriter, r *http.Request) {
@@ -65,5 +68,9 @@ func (h *handler) GetLongUrl(w http.ResponseWriter, r *http.Request) {
 	if !strings.HasPrefix(long_url, "http://") && !strings.HasPrefix(long_url, "https://") {
 		long_url = "https://" + long_url
 	}
-	http.Redirect(w, r, long_url, http.StatusFound)
+	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"long_url": long_url}, nil)
+	if err != nil {
+		customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
+		return
+	}
 }

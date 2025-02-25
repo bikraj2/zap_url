@@ -22,7 +22,7 @@ func ErrorResponse(w http.ResponseWriter, status int, headers http.Header, messa
 }
 
 func NotFoundResponse(w http.ResponseWriter) {
-	message := "thee resource you requested for doesnot exist"
+	message := "the resource you requested for doesnot exist"
 	ErrorResponse(w, http.StatusNotFound, nil, message)
 }
 func BadRequestErrorResponse(w http.ResponseWriter) {
