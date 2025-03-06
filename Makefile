@@ -94,6 +94,7 @@ endif
 
 ## db/migration/up: Apply all 'up' database migrations (default: ./migration)
 .PHONY: db/migration/up
+
 db/migration/up: confirm
 	@echo "Running up migrations in $(MIGRATION_DIR)..."
 	migrate -path $(MIGRATION_DIR) -database ${URL_SHORTENER_DSN} up

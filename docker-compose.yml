@@ -1,0 +1,91 @@
+services:
+  shorten:
+    build:
+      context: .
+      dockerfile: ./shorten/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1082:8081"
+    volumes:
+      - ./shorten:/app
+    env_file:
+      - ".envrc"
+    depends_on:
+      - pg-container
+      - kgs
+
+  redirect:
+    build:
+      context: .
+      dockerfile: ./redirect/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8082:8082"
+    volumes:
+      - ./redirect:/app
+    env_file:
+      - ".envrc"
+
+  kgs:
+    build:
+      context: .
+      dockerfile: ./kgs/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./kgs:/app
+    env_file:
+      - ".envrc"
+    depends_on:
+      - dev-consul
+      - redis-rebloom
+  gateway:
+    build:
+      context: .
+      dockerfile: ./gateway/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8084:8084"
+    volumes:
+      - ./gateway:/app
+    env_file:
+      - ".envrc"
+    depends_on:
+      - pg-container
+      - shorten
+      - redirect
+
+  redis-rebloom:
+    image: goodform/rebloom:latest
+    container_name: rebloom
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6379:6379"
+    platform: "linux/amd64"
+
+  dev-consul:
+    image: hashicorp/consul:latest
+    container_name: dev-consul
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8500:8500"
+      - "127.0.0.1:8600:8600/udp"
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+
+  pg-container:
+    image: postgres:latest
+    container_name: pg_container
+    restart: unless-stopped
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=url_shortener
+
+volumes:
+  pg_data:

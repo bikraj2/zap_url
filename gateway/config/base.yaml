@@ -1,0 +1,8 @@
+server:
+  port: "8084" 
+jors:
+  TrustedOrigins:
+    - "https://zapurl.tech"
+    - "http://localhost:5173"
+consul:
+  address: "dev-consul:8500"

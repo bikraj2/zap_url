@@ -18,6 +18,7 @@ copy . .
 
 
 RUN go build -o ./main \
+    -ldflags="-linkmode external -extldflags -static" \
     ./kgs/cmd/
 
 
@@ -26,6 +27,5 @@ FROM alpine:latest
 COPY --from=builder /app/main kgs 
 RUN apk add --no-cache libc6-compat
 
-EXPOSE 8081
 
 CMD ["/kgs"]

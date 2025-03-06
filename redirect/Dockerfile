@@ -24,12 +24,10 @@ RUN go build -o ./main \
 FROM alpine:latest
 
 COPY --from=builder /app/main redirect
-COPY .envrc /envrc
 
 # Ensure the env file is sourced before running
 RUN echo 'source /envrc' >> /etc/profile
 
 
-EXPOSE 8082
 
-CMD ["sh", "-c", "source /envrc && /redirect --db-dsn \"$URL_SHORTENER_DSN\""]
+CMD ["sh", "-c", "/redirect --db-dsn \"$URL_SHORTENER_DSN\""]

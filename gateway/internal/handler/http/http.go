@@ -1,76 +1,71 @@
 package httphandler
 
 import (
-	"encoding/json"
 	"errors"
 	"net/http"
 	"strings"
 
 	customerror "github.com/bikraj2/url_shortener/gateway/internal"
 	"github.com/bikraj2/url_shortener/gateway/internal/controller"
-	"github.com/bikraj2/url_shortener/gateway/internal/helper"
-	"github.com/go-chi/chi/v5"
+	"github.com/gin-gonic/gin"
 )
 
-type handler struct {
+type Handler struct {
 	ctrl *controller.Controller
 }
 
-func New(ctrl *controller.Controller) *handler {
-	return &handler{ctrl}
+func New(ctrl *controller.Controller) *Handler {
+	return &Handler{ctrl}
 }
 
-func (h *handler) CreateShortUrl(w http.ResponseWriter, r *http.Request) {
-	defer r.Body.Close()
+// ✅ Convert `CreateShortUrl` to use Gin
+func (h *Handler) CreateShortUrl(c *gin.Context) {
 	var URL struct {
 		LongUrl string `json:"long_url"`
 	}
-	err := json.NewDecoder(r.Body).Decode(&URL)
-	if err != nil {
-		customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
+
+	if err := c.ShouldBindJSON(&URL); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON body"})
 		return
 	}
-	short_url, err := h.ctrl.CreateShortUrl(r.Context(), URL.LongUrl)
+
+	shortURL, err := h.ctrl.CreateShortUrl(c.Request.Context(), URL.LongUrl)
 	if err != nil {
 		switch {
 		case errors.Is(err, customerror.ErrNotFound):
-			customerror.NotFoundResponse(w)
+			c.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
 		case errors.Is(err, customerror.ErrBadRequest):
-			customerror.BadRequestErrorResponse(w)
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
 		default:
-			customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
 		return
 	}
-	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"short_url": short_url}, nil)
-	if err != nil {
-		customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
-		return
-	}
-}
-func (h *handler) Redirect(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "https://www.zapurl.tech/main", http.StatusTemporaryRedirect)
+
+	c.JSON(http.StatusCreated, gin.H{"short_url": shortURL})
 }
 
-func (h *handler) GetLongUrl(w http.ResponseWriter, r *http.Request) {
-	short_url := chi.URLParam(r, "short_url")
+func (h *Handler) Redirect(c *gin.Context) {
+	c.Redirect(http.StatusTemporaryRedirect, "https://www.zapurl.tech/main")
+}
 
-	long_url, err := h.ctrl.GetLongUrl(r.Context(), short_url)
+func (h *Handler) GetLongUrl(c *gin.Context) {
+	shortURL := c.Param("short_url")
+
+	longURL, err := h.ctrl.GetLongUrl(c.Request.Context(), shortURL)
 	if err != nil {
 		switch {
 		case errors.Is(err, customerror.ErrNotFound):
-			customerror.NotFoundResponse(w)
+			c.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
 		default:
-			customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
 		return
 	}
-	if !strings.HasPrefix(long_url, "http://") && !strings.HasPrefix(long_url, "https://") {
-		long_url = "https://" + long_url
+
+	if !strings.HasPrefix(longURL, "http://") && !strings.HasPrefix(longURL, "https://") {
+		longURL = "https://" + longURL
 	}
-	err = helper.WriteJSON(w, http.StatusCreated, helper.Envelope{"long_url": long_url}, nil)
-	if err != nil {
-		customerror.ErrorResponse(w, http.StatusInternalServerError, nil, err.Error())
-		return
-	}
+
+	c.JSON(http.StatusOK, gin.H{"long_url": longURL})
 }

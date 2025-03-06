@@ -25,12 +25,10 @@ FROM alpine:latest
 
 COPY --from=builder /app/main /shorten
 
-COPY .envrc /envrc
 
 # Ensure the env file is sourced before running
 RUN echo 'source /envrc' >> /etc/profile
 
-EXPOSE 8084
 
-CMD ["sh", "-c", "source /envrc && /shorten -cors-trusted-origin \"$CORS_ORIGIN\""]
+CMD ["sh", "-c", "/shorten -cors-trusted-origin \"$CORS_ORIGIN\""]
 
