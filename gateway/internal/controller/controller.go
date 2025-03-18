@@ -5,15 +5,17 @@ import (
 
 	redirect "github.com/bikraj2/url_shortener/gateway/internal/gateway/redirect/http"
 	shorten "github.com/bikraj2/url_shortener/gateway/internal/gateway/shorten/http"
+	"github.com/bikraj2/url_shortener/gateway/internal/repository/data"
 )
 
 type Controller struct {
 	redirectGateway *redirect.Gateway
 	shortenGateway  *shorten.Gateway
+	userModel       *data.UserRepository
 }
 
-func New(rg *redirect.Gateway, sg *shorten.Gateway) *Controller {
-	return &Controller{redirectGateway: rg, shortenGateway: sg}
+func New(rg *redirect.Gateway, sg *shorten.Gateway, userModel *data.UserRepository) *Controller {
+	return &Controller{redirectGateway: rg, shortenGateway: sg, userModel: userModel}
 }
 
 func (ctrl *Controller) CreateShortUrl(ctx context.Context, long_url string) (string, error) {
@@ -30,4 +32,7 @@ func (ctrl *Controller) GetLongUrl(ctx context.Context, short_url string) (strin
 		return "", err
 	}
 	return long_url, nil
+}
+func (ctrl *Controller) RegisterUser(ctx context.Context, user *data.User) error {
+	return ctrl.userModel.RegisterUser(user)
 }

@@ -1,8 +1,13 @@
 server:
   port: "8084" 
-jors:
-  TrustedOrigins:
+cors:
+  trusted_origins:
     - "https://zapurl.tech"
     - "http://localhost:5173"
 consul:
   address: "dev-consul:8500"
+db:
+  dsn: "postgres://admin:admin@pg-container:5432/url_shortener?sslmode=disable"
+  max_open_cons: 25
+  max_idle_conns: 10
+  max_idle_time: "15m"

@@ -7,7 +7,7 @@ import (
 )
 
 func loadConfig(c *config) error {
-	file, err := os.Open("./app/config/base.yaml")
+	file, err := os.Open("./config/base.yaml")
 	if err != nil {
 		return err
 	}

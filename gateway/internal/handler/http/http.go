@@ -2,23 +2,27 @@ package httphandler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 
-	customerror "github.com/bikraj2/url_shortener/gateway/internal"
+	"github.com/bikraj2/url_shortener/gateway/internal"
 	"github.com/bikraj2/url_shortener/gateway/internal/controller"
+	"github.com/bikraj2/url_shortener/gateway/internal/repository/data"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+	"go.uber.org/zap"
 )
 
 type Handler struct {
-	ctrl *controller.Controller
+	ctrl   *controller.Controller
+	logger *zap.Logger
 }
 
-func New(ctrl *controller.Controller) *Handler {
-	return &Handler{ctrl}
+func New(ctrl *controller.Controller, logger *zap.Logger) *Handler {
+	return &Handler{ctrl, logger}
 }
 
-// ✅ Convert `CreateShortUrl` to use Gin
 func (h *Handler) CreateShortUrl(c *gin.Context) {
 	var URL struct {
 		LongUrl string `json:"long_url"`
@@ -54,12 +58,7 @@ func (h *Handler) GetLongUrl(c *gin.Context) {
 
 	longURL, err := h.ctrl.GetLongUrl(c.Request.Context(), shortURL)
 	if err != nil {
-		switch {
-		case errors.Is(err, customerror.ErrNotFound):
-			c.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
-		default:
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		}
+		customerror.RespondWithError(c, err)
 		return
 	}
 
@@ -68,4 +67,25 @@ func (h *Handler) GetLongUrl(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"long_url": longURL})
+}
+
+func (h *Handler) RegisterUserHandler(c *gin.Context) {
+
+	var user data.User
+
+	if err := c.ShouldBindJSON(&user); err != nil {
+		validationErrors := make(map[string]any)
+
+		for _, fieldErr := range err.(validator.ValidationErrors) {
+			validationErrors[fieldErr.Field()] = fmt.Sprintf("Field '%s' failed on '%s' rule", fieldErr.Field(), fieldErr.Tag())
+		}
+		customerror.RespondWithError(c, customerror.NewValidationError("Invalid input data", validationErrors))
+		return
+	}
+
+	err := h.ctrl.RegisterUser(c.Request.Context(), &user)
+	if err != nil {
+		customerror.RespondWithError(c, err)
+		return
+	}
 }

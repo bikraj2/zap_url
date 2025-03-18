@@ -1,30 +1,65 @@
 package customerror
 
 import (
-	"errors"
+	"fmt"
 	"net/http"
 
-	"github.com/bikraj2/url_shortener/gateway/internal/helper"
+	"github.com/gin-gonic/gin"
 )
 
 var (
-	ErrNotFound      = errors.New("the specified resource could not be found")
-	ErrInternalError = errors.New("internal serve error")
-	ErrBadRequest    = errors.New("request is badly formatted")
+	ErrNotFound      = NewNotFoundError("The specified resource could not be found", nil)
+	ErrInternalError = NewInternalServerError("Internal server error", nil)
+	ErrBadRequest    = NewValidationError("Request is badly formatted", nil)
 )
 
-func ErrorResponse(w http.ResponseWriter, status int, headers http.Header, message string) {
-	data := helper.Envelope{"error": message}
-	err := helper.WriteJSON(w, status, data, nil)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+type AppError struct {
+	HTTPCode int
+	Code     string
+	Message  string
+	Details  map[string]any
+}
+
+func (err *AppError) Error() string {
+	return fmt.Sprintf("Code: %s | HTTPCode: %d | Message: %s | Details: %v", err.Code, err.HTTPCode, err.Message, err.Details)
+}
+
+func RespondWithError(c *gin.Context, err error) {
+	if appErr, ok := err.(*AppError); ok {
+		c.JSON(appErr.HTTPCode, gin.H{
+			"error":   appErr.Code,
+			"message": appErr.Message,
+			"details": appErr.Details,
+		})
+	} else {
+		// If it's a generic Go error, wrap it into an internal server error
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "INTERNAL_SERVER_ERROR",
+			"message": err.Error(),
+		})
 	}
 }
 
-func NotFoundResponse(w http.ResponseWriter) {
-	message := "the resource you requested for doesnot exist"
-	ErrorResponse(w, http.StatusNotFound, nil, message)
+func NewValidationError(msg string, details map[string]any) *AppError {
+	return &AppError{HTTPCode: http.StatusBadRequest, Code: "VALIDATION_ERROR", Message: msg, Details: details}
 }
-func BadRequestErrorResponse(w http.ResponseWriter) {
-	ErrorResponse(w, http.StatusBadRequest, nil, ErrBadRequest.Error())
+
+func NewDuplicateError(msg string, details map[string]any) *AppError {
+	return &AppError{HTTPCode: http.StatusConflict, Code: "DUPLICATE_ENTRY", Message: msg, Details: details}
+}
+
+func NewNotFoundError(msg string, details map[string]any) *AppError {
+	return &AppError{HTTPCode: http.StatusNotFound, Code: "NOT_FOUND", Message: msg, Details: details}
+}
+
+func NewDatabaseError(msg string, details map[string]any) *AppError {
+	return &AppError{HTTPCode: http.StatusInternalServerError, Code: "DB_ERROR", Message: msg, Details: details}
+}
+
+func NewUnauthorizedError(msg string, details map[string]any) *AppError {
+	return &AppError{HTTPCode: http.StatusUnauthorized, Code: "UNAUTHORIZED", Message: msg, Details: details}
+}
+
+func NewInternalServerError(msg string, details map[string]any) *AppError {
+	return &AppError{HTTPCode: http.StatusInternalServerError, Code: "INTERNAL_SERVER_ERROR", Message: msg, Details: details}
 }

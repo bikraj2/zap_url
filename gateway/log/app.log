@@ -1,2 +1,94 @@
 {"level":"INFO","timestamp":"2025-03-06T06:56:53.090Z","caller":"cmd/middlewares.go:40","msg":"Request completed","method":"GET","path":"/","status":307,"client_ip":"172.21.0.1","latency":458958}
 {"level":"INFO","timestamp":"2025-03-06T06:57:58.599Z","caller":"cmd/middlewares.go:40","msg":"Request completed","method":"GET","path":"/","status":307,"client_ip":"172.21.0.1","latency":400041}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:06.051Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:06.253Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:06.555Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:07.093Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:08.035Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:09.777Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:13.116Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:19.638Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:32.576Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:18:58.334Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:19:49.676Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:20:49.816Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:21:49.954Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:22:50.122Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:23:50.289Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:24:50.435Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:25:50.585Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:26:50.749Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:27:50.950Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:28:51.120Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:29:51.280Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T03:30:51.487Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:24.894Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:25.146Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:25.501Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:26.048Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:26.996Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:28.739Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:32.071Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:38.619Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:02:51.623Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:03:17.406Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:04:08.797Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:24.929Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:25.140Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:25.455Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:25.984Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:26.938Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:28.672Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:32.004Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:38.556Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:05:51.604Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:06:17.346Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:07:08.783Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:08:08.972Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:09:09.208Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:10:09.445Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:11:09.638Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:12:09.814Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:13:09.974Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:14:10.217Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:15:10.426Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:16:10.721Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T05:17:10.890Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:52:45.467Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:52:51.722Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:53:02.245Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:53:39.970Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:53:48.347Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:53:56.854Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:53:56.869Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:54:01.281Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:54:04.733Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:57:00.265Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:57:01.178Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:57:23.543Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:57:31.052Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:58:10.814Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:59:07.005Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T08:59:24.309Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:00:08.070Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:00:11.647Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:00:29.095Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:00:39.720Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:00:59.766Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:01:00.527Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:01:01.167Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:01:01.619Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:01:02.222Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:01:02.687Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"FATAL","timestamp":"2025-03-18T09:01:04.410Z","caller":"cmd/main.go:94","msg":"Error while connecting to the database","error":"dial tcp [::1]:5432: connect: connection refused"}
+{"level":"INFO","timestamp":"2025-03-18T09:08:56.805Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"GET","path":"/api/v1/shorten","status":404,"client_ip":"172.21.0.1","latency":30000}
+{"level":"INFO","timestamp":"2025-03-18T09:09:19.133Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"GET","path":"/api/v1/shorten","status":404,"client_ip":"172.21.0.1","latency":49125}
+{"level":"INFO","timestamp":"2025-03-18T09:09:24.886Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"POST","path":"/api/v1/shorten","status":400,"client_ip":"172.21.0.1","latency":306834}
+{"level":"INFO","timestamp":"2025-03-18T09:09:50.138Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"POST","path":"/api/v1/shorten","status":400,"client_ip":"172.21.0.1","latency":661000}
+{"level":"INFO","timestamp":"2025-03-18T09:09:55.363Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"POST","path":"/api/v1/shorten","status":500,"client_ip":"172.21.0.1","latency":363906667}
+{"level":"INFO","timestamp":"2025-03-18T09:20:29.561Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"POST","path":"/api/v1/shorten","status":500,"client_ip":"172.21.0.1","latency":31880917}
+{"level":"INFO","timestamp":"2025-03-18T09:20:48.142Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"POST","path":"/api/v1/shorten","status":500,"client_ip":"172.21.0.1","latency":15557750}
+{"level":"INFO","timestamp":"2025-03-18T09:22:06.085Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"POST","path":"/api/v1/shorten","status":201,"client_ip":"172.21.0.1","latency":25859500}
+{"level":"INFO","timestamp":"2025-03-18T09:22:50.483Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"GET","path":"/api/v1/resolve/llt5sGc","status":404,"client_ip":"172.21.0.1","latency":112875}
+{"level":"INFO","timestamp":"2025-03-18T09:23:03.588Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"GET","path":"/api/v1/resolve/llt5sGc","status":404,"client_ip":"172.21.0.1","latency":4791}
+{"level":"INFO","timestamp":"2025-03-18T10:39:48.168Z","caller":"cmd/middlewares.go:38","msg":"Request completed","method":"GET","path":"/api/v1/resolve/llt5sGc","status":200,"client_ip":"172.21.0.1","latency":67786791}

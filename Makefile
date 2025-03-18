@@ -81,7 +81,7 @@ db/psql:
 # --- Database Migrations ---
 
 # Default values (can be overridden when running make)
-MIGRATION_DIR ?= ./migration  # Default migration directory
+MIGRATION_DIR ?= ./migrations  # Default migration directory
 
 ## db/migration/new: Create a new set of database migrations (requires name)
 .PHONY: db/migration/new

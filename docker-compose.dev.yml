@@ -2,12 +2,12 @@ services:
   shorten:
     build:
       context: .
-      dockerfile: ./shorten/Dockerfile
+      dockerfile: ./shorten/Dockerfile.dev
     restart: unless-stopped
     ports:
       - "127.0.0.1:8081:8081"
     volumes:
-      - ./shorten:/app
+      - .:/app
     env_file:
       - ".envrc"
     depends_on:
@@ -17,24 +17,24 @@ services:
   redirect:
     build:
       context: .
-      dockerfile: ./redirect/Dockerfile
+      dockerfile: ./redirect/Dockerfile.dev
     restart: unless-stopped
     ports:
       - "127.0.0.1:8082:8082"
     volumes:
-      - ./redirect:/app
+      - .:/app
     env_file:
       - ".envrc"
 
   kgs:
     build:
       context: .
-      dockerfile: ./kgs/Dockerfile
+      dockerfile: ./kgs/Dockerfile.dev
     restart: unless-stopped
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
-      - ./kgs:/app
+      - .:/app
     env_file:
       - ".envrc"
     depends_on:
@@ -43,12 +43,12 @@ services:
   gateway:
     build:
       context: .
-      dockerfile: ./gateway/Dockerfile
+      dockerfile: ./gateway/Dockerfile.dev
     restart: unless-stopped
     ports:
       - "127.0.0.1:8084:8084"
     volumes:
-      - ./gateway:/app
+      - .:/app
     env_file:
       - ".envrc"
     depends_on:

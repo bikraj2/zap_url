@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"time"
@@ -10,6 +11,7 @@ import (
 	redirect "github.com/bikraj2/url_shortener/gateway/internal/gateway/redirect/http"
 	shorten "github.com/bikraj2/url_shortener/gateway/internal/gateway/shorten/http"
 	httphandler "github.com/bikraj2/url_shortener/gateway/internal/handler/http"
+	"github.com/bikraj2/url_shortener/gateway/internal/repository/data"
 	"github.com/bikraj2/url_shortener/pkg/discovery"
 	"github.com/bikraj2/url_shortener/pkg/discovery/consul"
 	"github.com/gin-gonic/gin"
@@ -27,12 +29,19 @@ type config struct {
 		Port string `yaml:"port"`
 	} `yaml:"server"`
 	Consul struct {
-		Adddress string `yaml:"adddress"`
+		Address string `yaml:"address"`
 	} `yaml:"consul"`
+	DB struct {
+		Dsn          string `yaml:"dsn"`
+		MaxOpenCons  int    `yaml:"max_open_cons"`
+		MaxIdleConns int    `yaml:"max_idle_conns"`
+		MaxIdleTime  string `yaml:"max_idle_time"`
+	} `yaml:"db"`
 }
 type application struct {
 	cfg    config `yaml:"cfg"`
 	logger *zap.Logger
+	db     *sql.DB
 }
 
 func main() {
@@ -41,8 +50,8 @@ func main() {
 		Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
 		Development:      true,
 		Encoding:         "json",
-		OutputPaths:      []string{"stdout", "./app/log/app.log"},
-		ErrorOutputPaths: []string{"stderr", "./app/log/error.log"},
+		OutputPaths:      []string{"stdout", "./log/app.log"},
+		ErrorOutputPaths: []string{"stderr", "./log/error.log"},
 		EncoderConfig: zapcore.EncoderConfig{
 			TimeKey:      "timestamp",
 			LevelKey:     "level",
@@ -80,21 +89,49 @@ func main() {
 		}
 	}()
 
-	app := &application{cfg: cfg, logger: logger}
+	db, err := openDB(cfg)
+	if err != nil {
+		logger.Fatal("Error while connecting to the database", zap.String("error", err.Error()))
+	}
+	app := &application{cfg: cfg, logger: logger, db: db}
+
 	redirectGateway := redirect.New(registry)
 	shortenGateway := shorten.New(registry)
-	ctrl := controller.New(redirectGateway, shortenGateway)
-	h := httphandler.New(ctrl)
+	userRepo := data.New(app.db)
+	ctrl := controller.New(redirectGateway, shortenGateway, userRepo)
+	h := httphandler.New(ctrl, app.logger)
 
 	r := gin.New()
 
-	r.Use(app.enableCORS)
+	r.SetTrustedProxies(app.cfg.Cors.TrustedOrigins)
 	r.Use(app.loggingMiddleware)
 	r.GET("/", h.Redirect)
-	r.GET("/api/v1/resolve/{short_url}", h.GetLongUrl)
+	r.GET("/api/v1/resolve/:short_url", h.GetLongUrl)
 	r.POST("/api/v1/shorten", h.CreateShortUrl)
 	err = r.Run(fmt.Sprintf(":%s", app.cfg.Server.Port))
 	if err != nil {
 		logger.Fatal("Error while Starting the sever", zap.String("error", err.Error()))
 	}
+}
+
+func openDB(cfg config) (*sql.DB, error) {
+	db, err := sql.Open("postgres", cfg.DB.Dsn)
+	if err != nil {
+		return nil, err
+	}
+	db.SetMaxOpenConns(cfg.DB.MaxOpenCons)
+	db.SetMaxIdleConns(cfg.DB.MaxIdleConns) // This should be lesser than  the MaxOpenCons
+	duration, err := time.ParseDuration(cfg.DB.MaxIdleTime)
+	if err != nil {
+		return nil, err
+	}
+	db.SetConnMaxIdleTime(duration)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err = db.PingContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }
